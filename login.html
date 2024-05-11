@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="styles-login.css">
+  <link href="https://fonts.googleapis.com/css2?family=Alatsi&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="container">
+    <form class="login-form" id="loginForm">
+      <h2>Login</h2>
+      <div class="input-container">
+        <input type="text" id="username" placeholder="Username" required>
+      </div>
+      <div class="input-container">
+        <input type="password" id="password" placeholder="Password" required>
+      </div>
+      <button type="submit">Login</button>
+      <p id="error-message" style="color: red; display: none;">Incorrect username or password.</p>
+    </form>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.slim.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDE4LYzrvtH83H55xqy337PzjvQnxu_tz4",
+      authDomain: "itaewon-c6b70.firebaseapp.com",
+      projectId: "itaewon-c6b70",
+      storageBucket: "itaewon-c6b70.appspot.com",
+      messagingSenderId: "240612686931",
+      appId: "1:240612686931:web:47f095536d9141886ddaa6",
+      measurementId: "G-T5MLZ5X2D0"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const loginForm = document.getElementById('loginForm');
+    const errorMessage = document.getElementById('error-message');
+
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      // Check if username exists in Firebase database
+      db.ref('Accounts/' + username).once('value')
+        .then((snapshot) => {
+          const userData = snapshot.val();
+
+          if (userData && userData.Password === password) {
+            // Successful login
+            window.location.href = "index.html"; // Redirect to dashboard or any other page
+          } else {
+            // Display error message
+            errorMessage.style.display = "block";
+          }
+        })
+        .catch((error) => {
+          console.error("Error retrieving data: ", error);
+        });
+    });
+
+  </script>
+</body>
+
+</html>

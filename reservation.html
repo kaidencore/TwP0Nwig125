@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Itaewon | Reservations</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Alatsi&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="screen">
+        <aside class="sidebar">
+            <div class="logo">
+                <a href="index.html"><img src="assets/emblem-2.png"></a>
+            </div>
+            <ul class="navigation">
+                <li><a href="index.html"><i class="bi bi-layout-wtf"></i></a>Tables</li>
+                <li class="active-li"><a href="reservation.html"><i class="bi bi-table"></i></a>Reservations</li>
+                <li><a href="login.html"><i class="bi bi-box-arrow-left"></i></a>Logout</li>
+            </ul>
+        </aside>
+        <div class="reservations-box">
+            <div class="reservations">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Search...">
+                    <button id="searchBtn">Search</button>
+                    <button class="refresh-btn"><i class="bi bi-arrow-clockwise"></i></button></th>
+                </div>
+                <table id="reservationsTable">
+                    <thead>
+                        <tr>
+                            <th id="tableHeaderName">Name</th>
+                            <th id="tableHeaderEmail">Email</th>
+                            <th id="tableHeaderPhone">Phone</th>
+                            <th id="tableHeaderDate">Date<button class="sortByDate-btn"><i
+                                        class="bi bi-arrow-down-short"></i></button></th>
+                            <th id="tableHeaderTimeslot">Timeslot</th>
+                            <th id="tableHeaderTable">Table</th>
+                            <th id="tableHeaderTimestamp">Added</th>
+                            <th id="tableHeaderStatus">Status</th>
+                            <th id="tableHeaderActions"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="reservationsTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+    <script>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDE4LYzrvtH83H55xqy337PzjvQnxu_tz4",
+            authDomain: "itaewon-c6b70.firebaseapp.com",
+            projectId: "itaewon-c6b70",
+            storageBucket: "itaewon-c6b70.appspot.com",
+            messagingSenderId: "240612686931",
+            appId: "1:240612686931:web:47f095536d9141886ddaa6",
+            measurementId: "G-T5MLZ5X2D0"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        // Function to fetch reservations from Firebase and render them
+        function fetchAndRenderReservations(isDescending) {
+            db.ref('Reservations').orderByChild('Date').once('value', snapshot => {
+                const reservations = snapshot.val();
+                const tableBody = document.getElementById('reservationsTableBody');
+
+                if (reservations) {
+                    tableBody.innerHTML = '';
+
+                    const sortedReservations = Object.entries(reservations)
+                        .sort(([, a], [, b]) => isDescending ? new Date(b.Date) - new Date(a.Date) : new Date(a.Date) - new Date(b.Date));
+
+                    sortedReservations.forEach(([key, reservation]) => {
+                        const row = document.createElement('tr');
+                        const ftsDate = moment(reservation.Timestamp).format('YYYY-MM-DD');
+                        const ftsTime = moment(reservation.Timestamp).format('hh:mm A');
+                        row.innerHTML = `
+                    <td id="tableDataName">${reservation.Name}</td>
+                    <td id="tableDataEmail">${reservation.Email}</td>
+                    <td id="tableDataPhone">${reservation.Phone}</td>
+                    <td id="tableDataDate">${reservation.Date}</td>
+                    <td id="tableDataTimeslot">${reservation.Timeslot}</td>
+                    <td id="tableDataTable">${reservation.Table}</td>
+                    <td id="tableDataTimestamp"><p id="ftsDate">${ftsDate}</p><p id="ftsTime">${ftsTime}</p></td>
+                    <td id="tableDataStatus"><div id="statusBubble">${reservation.Status}</div></td>
+                    <td class="tableDataActions"> 
+                        <button class="delete-btn" data-id="${key}"><i class="bi bi-trash"></i></button>
+                        <button class="done-btn" data-id="${key}"><i class="bi bi-check-circle"></i></button>
+                    </td>
+                `;
+
+                        tableBody.appendChild(row);
+
+                        const statusBubble = row.querySelector('#statusBubble');
+                        if (reservation.Status == "Unconfirmed") {
+                            statusBubble.style.backgroundColor = "#ff4a4a";
+                        } else {
+                            statusBubble.style.backgroundColor = '#75ff80';
+                        }
+                    });
+                } else {
+                    tableBody.innerHTML = '<tr><td colspan="9">No reservations found</td></tr>';
+                }
+            }).catch(error => {
+                console.error('Error fetching reservations: ', error);
+            });
+        }
+
+        // Function to filter reservations based on search input
+        function filterReservations() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const tableRows = document.querySelectorAll('#reservationsTableBody tr');
+
+            tableRows.forEach(row => {
+                const rowData = row.textContent.toLowerCase();
+                if (rowData.includes(searchInput)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Event listener for search button click
+        document.getElementById('searchBtn').addEventListener('click', filterReservations);
+
+        // Event listener for search input keyup
+        document.getElementById('searchInput').addEventListener('keyup', filterReservations);
+
+        // Event listener for clicking the Date header button to toggle sorting order
+        document.addEventListener('DOMContentLoaded', function () {
+            const sortByDateButton = document.querySelector('.sortByDate-btn');
+            let isDescending = true; // Initial sort order: latest to oldest
+
+            sortByDateButton.addEventListener('click', function () {
+                isDescending = !isDescending; // Toggle sort order
+                const arrowIcon = sortByDateButton.querySelector('i');
+
+                if (isDescending) {
+                    // Sort by date: latest to oldest
+                    arrowIcon.classList.remove('bi-arrow-up-short');
+                    arrowIcon.classList.add('bi-arrow-down-short');
+                } else {
+                    // Sort by date: oldest to latest
+                    arrowIcon.classList.remove('bi-arrow-down-short');
+                    arrowIcon.classList.add('bi-arrow-up-short');
+                }
+
+                // Call a function to fetch and render reservations based on the current sort order
+                fetchAndRenderReservations(isDescending);
+            });
+        });
+
+        // Event listener for deleting a reservation
+        document.addEventListener('click', function (event) {
+            if (event.target.classList.contains('delete-btn')) {
+                const reservationId = event.target.dataset.id;
+                if (confirm('Are you sure you want to delete this reservation?')) {
+                    db.ref('Reservations').child(reservationId).remove()
+                        .then(() => {
+                            fetchAndRenderReservations(true);
+                        })
+                        .catch(error => {
+                            console.error('Error deleting reservation: ', error);
+                        });
+                }
+            }
+        });
+
+        // Event listener for marking a reservation as done
+        document.addEventListener('click', function (event) {
+            if (event.target.classList.contains('done-btn')) {
+                const reservationId = event.target.dataset.id;
+                if (confirm('Mark this reservation as done?')) {
+                    db.ref('Reservations').child(reservationId).update({ Status: 'Done' })
+                        .then(() => {
+                            fetchAndRenderReservations(true);
+                        })
+                        .catch(error => {
+                            console.error('Error updating reservation status: ', error);
+                        });
+                }
+            }
+        });
+
+        document.addEventListener('click', function (event) {
+            if (event.target.classList.contains('refresh-btn')) {
+                location.reload();
+            }
+        });
+
+        // Initial fetching and rendering of reservations
+        fetchAndRenderReservations(true);
+    </script>
+</body>
