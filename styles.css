@@ -1,0 +1,531 @@
+.alatsi-regular {
+    font-family: "Alatsi", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+body {
+    font-family: "Alatsi", sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.screen {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    height: auto;
+    background-color: rgb(29, 26, 40);
+    box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.2);
+    padding: 8px;
+    z-index: 1;
+}
+
+.logo {
+    margin: 20px 5px;
+    text-align: center;
+}
+
+.logo img {
+    max-width: 75px;
+}
+
+.navigation {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0;
+    color: rgb(150, 150, 150);
+}
+
+.navigation li {
+    margin: 50px 0;
+    text-align: center;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.active-li {
+    background-color: #333;
+    padding: 5px;
+    border-radius: 10px;
+    color: white;
+}
+
+.navigation a {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    font-size: 20px;
+    text-decoration: none;
+    color: white;
+}
+
+.navigation a:hover {
+    opacity: 0.8;
+}
+
+.switch-box {
+    display: flex;
+    background-color: rgba(29, 26, 40, 0.7);
+    height: auto;
+    overflow: auto;
+}
+
+.table-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.table-card {
+    background-color: #d7d7d7;
+    border: 1px solid rgba(0, 0, 0, 1);
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    margin: 10px;
+    padding: 25px;
+    text-align: center;
+    max-height: 60px;
+    max-width: 60px;
+}
+
+.table-card h2 {
+    margin-bottom: 10px;
+    font-size: 15px;
+    color: #000000;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+    border-radius: 34px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #65ff75;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 5px;
+    bottom: 5px;
+    background-color: #fff;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked+.slider {
+    background-color: #ff5a5a;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #ff5a5a;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+.duration-text {
+    font-size: 13px;
+    text-shadow: 1px 0.5px #000;
+    fill: #eee;
+}
+
+.map-section {
+    display: flex;
+    align-items: center;
+    margin: 0 50px 0 0;
+}
+
+#map {
+    height: 500px;
+    width: 500px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/*reservations styling*/
+.reservations-box {
+    background-color: #f8f9fa;
+    max-width: 1200px;
+    margin: 30px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.search-box {
+    margin-bottom: 20px;
+}
+
+.search-box input[type="text"] {
+    padding: 10px;
+    width: 200px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-box button {
+    padding: 10px 20px;
+    background-color: #004080;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-box button:hover {
+    opacity: 80%;
+}
+
+table {
+    font-size: 12px;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border-bottom: 1px solid #ddd;
+    padding: 25px 0;
+}
+
+th {
+    background-color: chocolate;
+    padding: 10px;
+    color: #fff;
+    font-weight: normal;
+}
+
+#tableDataName,
+#tableDataEmail {
+    padding: 10px;
+}
+
+#tableHeaderPhone,
+#tableHeaderDate,
+#tableHeaderTimestamp,
+#tableDataPhone,
+#tableDataDate,
+#tableDataTimestamp {
+    text-align: center;
+    width: 100px;
+}
+
+#tableHeaderTimeslot,
+#tableHeaderTable,
+#tableDataTimeslot,
+#tableDataTable {
+    text-align: center;
+    width: 80px;
+}
+
+#ftsDate,
+#ftsTime {
+    margin: 0;
+}
+
+#ftsTime {
+    font-size: 10px;
+    opacity: 50%;
+    padding-left: 25px;
+}
+
+#tableHeaderStatus,
+#tableDataStatus {
+    width: 80px;
+}
+
+#statusBubble {
+    margin-left: 13px;
+    text-align: center;
+    font-size: 10px;
+    width: 7em;
+    border-radius: 10px;
+    padding: 4px 2px;
+}
+
+.sortByDate-btn {
+    display: inline-block;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #fff;
+}
+
+.delete-btn,
+.done-btn {
+    display: inline-block;
+    padding: 0.5rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #7f7f7f;
+    transition: color 0.3s;
+}
+
+.delete-btn:hover {
+    color: #ff4a4a;
+}
+
+.done-btn:hover {
+    color: #75ff80;
+}
+
+.refresh-btn i {
+    pointer-events: none;
+}
+
+.delete-btn i,
+.done-btn i {
+    font-size: 1.5rem;
+    pointer-events: none;
+}
+
+
+@media screen and (max-width: 1200px) {
+    #map {
+        height: 400px;
+        width: 400px;
+    }
+
+    .table-card {
+        max-height: 60px;
+        max-width: 60px;
+    }
+
+    .table-card h2 {
+        margin-bottom: 10px;
+        font-size: 10px;
+        color: #000000;
+    }
+
+    .switch {
+        width: 40px;
+        height: 20px;
+        border-radius: 34px;
+    }
+
+    .slider {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #65ff75;
+        -webkit-transition: .4s;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+    .slider:before {
+        height: 12px;
+        width: 12px;
+        left: 1px;
+        bottom: 4px;
+        background-color: #fff;
+        -webkit-transition: .4s;
+        transition: .4s;
+        border-radius: 50%;
+    }
+}
+
+@media screen and (max-width: 1056px) {
+    .map-section {
+        margin: 0 25px 0 0;
+    }
+
+    #map {
+        height: 350px;
+        width: 350px;
+    }
+
+    .reservations-box {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 950px) {
+    .map-section {
+        margin: 0 25px 0 0;
+    }
+
+    #map {
+        height: 250px;
+        width: 250px;
+    }
+
+    .table-card {
+        max-height: 30px;
+        max-width: 30px;
+    }
+
+    .table-card h2 {
+        margin-bottom: 12px;
+        font-size: 8px;
+        color: #000000;
+    }
+
+    .switch {
+        width: 30px;
+        height: 15px;
+        border-radius: 34px;
+    }
+
+    .slider {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #65ff75;
+        -webkit-transition: .3s;
+        transition: .3s;
+        border-radius: 34px;
+    }
+
+    .slider:before {
+        height: 12px;
+        width: 12px;
+        top: 1px;
+        left: -5px;
+        right: 0;
+        bottom: 0;
+        background-color: #fff;
+        -webkit-transition: .3s;
+        transition: .3s;
+        border-radius: 50%;
+    }
+}
+
+@media screen and (max-width: 724px) {
+    .map-section{
+        justify-content: center;
+        margin: 25px 0;
+    }
+
+    #map{
+        height: 400px;
+        width: 400px;
+    }
+
+    .switch-box{
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .sidebar {
+        height: auto;
+        background-color: rgb(29, 26, 40);
+        box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.2);
+        padding: 5px;
+        z-index: 1;
+    }
+    
+    .logo img {
+        max-width: 50px;
+    }
+    
+    .navigation li {
+        margin: 50px 0;
+        text-align: center;
+        font-size: 0;
+    }
+    
+    .navigation a {
+        padding: 5px;
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 515px) {
+    #map{
+        height: 300px;
+        width: 300px;
+        box-shadow: none;
+    }
+
+    .switch-box{
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    
+    .logo img {
+        max-width: 50px;
+    }
+    
+    .navigation li {
+        margin: 50px 0;
+        text-align: center;
+        font-size: 0;
+    }
+    
+    .navigation a {
+        padding: 5px;
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    #map{
+        height: 200px;
+        width: 200px;
+        box-shadow: none;
+    }
+
+    .switch-box{
+        display: flex;
+        flex-direction: column-reverse;
+    }
+    
+    .logo img {
+        max-width: 50px;
+    }
+    
+    .navigation li {
+        margin: 50px 0;
+        text-align: center;
+        font-size: 0;
+    }
+    
+    .navigation a {
+        padding: 5px;
+        font-size: 15px;
+    }
+}
+
+@media screen and (max-width: 312px) {
+    .switch-box {
+        display: none;
+    }
+}
